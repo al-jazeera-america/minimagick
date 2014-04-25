@@ -194,15 +194,15 @@ module MiniMagick
       # Why do I go to the trouble of putting in newlines? Because otherwise animated gifs screw everything up
       case value.to_s
       when "colorspace"
-        run_command("identify", "-format", '%r\n', path).split("\n")[0].strip
+        run_command("identify", "-format", '%r\n', path).split("\n").last.strip
       when "format"
-        run_command("identify", "-format", '%m\n', path).split("\n")[0]
+        run_command("identify", "-format", '%m\n', path).split("\n").last
       when "height"
-        run_command("identify", "-format", '%h\n', path).split("\n")[0].to_i
+        run_command("identify", "-format", '%h\n', path).split("\n").last.to_i
       when "width"
-        run_command("identify", "-format", '%w\n', path).split("\n")[0].to_i
+        run_command("identify", "-format", '%w\n', path).split("\n").last.to_i
       when "dimensions"
-        run_command("identify", "-format", MiniMagick::Utilities.windows? ? '"%w %h\n"' : '%w %h\n', path).split("\n")[0].split.map{|v|v.to_i}
+        run_command("identify", "-format", MiniMagick::Utilities.windows? ? '"%w %h\n"' : '%w %h\n', path).split("\n").last.split.map{|v|v.to_i}
       when "size"
         File.size(path) # Do this because calling identify -format "%b" on an animated gif fails!
       when "original_at"
@@ -216,7 +216,7 @@ module MiniMagick
           result
         end
       else
-        run_command('identify', '-format', value, path).split("\n")[0]
+        run_command('identify', '-format', value, path).split("\n").last
       end
     end
 
